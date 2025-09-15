@@ -1,15 +1,153 @@
-.app { display: flex; height: 100vh; font-family: 'Inter', sans-serif; background: #0f172a; color: #e2e8f0; }
-.sidebar { width: 260px; background: linear-gradient(180deg,#111827,#0b1222); padding: 20px; box-shadow: 2px 0 20px rgba(0,0,0,0.4); display: flex; flex-direction: column; gap: 16px; }
+.app { display: flex; height: 100vh; font-family: 'Inter', sans-serif; background: #f8fafc; color: #222; }
+.sidebar {
+	width: 260px;
+	background: #fff;
+	padding: 28px 0 0 0;
+	box-shadow: 2px 0 20px rgba(0,0,0,0.04);
+	display: flex;
+	flex-direction: column;
+	align-items: stretch;
+	gap: 0;
+}
+.logo {
+	padding-left: 32px;
+	margin-bottom: 32px;
+}
+.menu {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	margin-bottom: 32px;
+	padding-left: 16px;
+}
+.theme-toggle {
+	margin: 24px 0 0 32px;
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	cursor: pointer;
+	font-size: 1rem;
+}
+.logout {
+	margin: 0 32px 16px 32px;
+	color: #2563eb;
+	cursor: pointer;
+	font-size: 1rem;
+	background: none;
+	border: none;
+	align-self: flex-start;
+}
+.user-info {
+	padding: 24px 32px 32px 32px;
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	border-top: 1px solid #e5e7eb;
+	margin-top: auto;
+}
 .brand { font-size: 20px; font-weight: 700; letter-spacing: 0.5px; }
 .user { margin-top: 6px; padding: 10px 12px; background: #111827; border-radius: 8px; color: #93c5fd; }
 .sidebar nav { display: flex; flex-direction: column; gap: 10px; margin-top: 16px; }
 .sidebar a { padding: 10px 12px; border-radius: 8px; color: #cbd5e1; text-decoration: none; transition: all .2s ease; }
-.sidebar a:hover { background: #1f2937; color: #fff; transform: translateX(4px); }
+.sidebar a:hover { background: #f1f5f9; color: #000; transform: translateX(4px); }
 .sidebar a.active { background: #1d4ed8; color: white; box-shadow: 0 8px 24px rgba(29,78,216,0.35); }
 .logout { margin-top: auto; padding: 10px 12px; border-radius: 8px; border: 0; background: #ef4444; color: white; cursor: pointer; transition: transform .2s ease, box-shadow .2s ease; }
 .logout:hover { transform: translateY(-1px); box-shadow: 0 6px 18px rgba(239,68,68,0.35); }
 .content { flex: 1; padding: 24px; overflow: auto; }
 .fade-in { animation: fadeIn .3s ease; }
 @keyframes fadeIn { from { opacity: 0; transform: translateY(6px);} to { opacity: 1; transform: translateY(0);} }
+
+/* New sidebar/menu/user/theme styles for reference UI */
+.logo {
+	padding-left: 24px;
+	margin-bottom: 32px;
+}
+.menu {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	margin-bottom: 32px;
+}
+.menu a {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	padding: 12px 24px;
+	border-radius: 8px;
+	font-size: 1.1rem;
+	color: var(--menu-color, #222);
+	cursor: pointer;
+	transition: background 0.2s;
+	text-decoration: none;
+}
+.menu a.active {
+	background: #e0e7ff;
+	color: #2563eb;
+	font-weight: 600;
+}
+.menu a:hover {
+	background: #f1f5f9;
+}
+.user-info {
+	margin-top: auto;
+	padding: 24px;
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	border-top: 1px solid #e5e7eb;
+}
+.user-avatar {
+	background: linear-gradient(135deg, #e0e7ff 60%, #c7d2fe 100%);
+	color: #2563eb;
+	border-radius: 50%;
+	width: 48px;
+	height: 48px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 1.4rem;
+	font-weight: 700;
+	box-shadow: 0 2px 8px rgba(37,99,235,0.08);
+	border: 2px solid #2563eb22;
+	margin-bottom: 8px;
+}
+.logout {
+	margin-left: 8px;
+	color: #2563eb;
+	cursor: pointer;
+	font-size: 1rem;
+	background: none;
+	border: none;
+}
+.theme-toggle {
+	margin: 24px 0 0 24px;
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	cursor: pointer;
+	font-size: 1rem;
+}
+:root[data-theme='dark'] {
+	--sidebar-bg: #18181b;
+	--menu-color: #e5e7eb;
+	background: #18181b;
+}
+:root[data-theme='dark'] .app {
+	--app-bg: #23272f;
+}
+:root[data-theme='dark'] .menu a {
+	color: #e5e7eb;
+}
+:root[data-theme='dark'] .menu a.active {
+	background: #2563eb;
+	color: #fff;
+}
+:root[data-theme='dark'] .user-avatar {
+	background: #2563eb;
+	color: #fff;
+}
+:root[data-theme='dark'] .logout {
+	color: #fff;
+}
 
 

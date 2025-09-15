@@ -29,34 +29,32 @@ export default function CalendarPage() {
 	}
 
 	return (
-		<div className="fade-in">
-			<div style={{display:'flex', justifyContent:'space-between', alignItems:'center'}}>
-				<h1 style={{marginTop:0}}>Calendar</h1>
-				<div style={{display:'flex', gap:8}}>
-					<button className="btn secondary" onClick={()=>setMonthOffset(m=>m-1)}>Prev</button>
-					<div style={{alignSelf:'center'}}>{monthDate.toLocaleString('default', { month: 'long' })} {monthDate.getFullYear()}</div>
-					<button className="btn" onClick={()=>setMonthOffset(m=>m+1)}>Next</button>
+			<div className="fade-in">
+				<div style={{display:'flex', justifyContent:'space-between', alignItems:'center'}}>
+					<h1 style={{marginTop:0, fontWeight:800, fontSize:'2.2rem'}}>Calendar</h1>
+					<div style={{display:'flex', gap:8}}>
+						<button className="btn secondary" onClick={()=>setMonthOffset(m=>m-1)}>Prev</button>
+						<div style={{alignSelf:'center', fontWeight:600, fontSize:'1.1rem'}}>{monthDate.toLocaleString('default', { month: 'long' })} {monthDate.getFullYear()}</div>
+						<button className="btn" onClick={()=>setMonthOffset(m=>m+1)}>Next</button>
+					</div>
 				</div>
-			</div>
-			<div style={{display:'grid', gridTemplateColumns:'repeat(7,1fr)', gap:8}}>
+			<div className="dashboard-grid" style={{gridTemplateColumns:'repeat(7, 1fr)', gap:12, marginTop:24}}>
 				{['Mon','Tue','Wed','Thu','Fri','Sat','Sun'].map(d=> <div key={d} style={{opacity:.6}}>{d}</div>)}
 				{days.map((d, i) => (
-					<div key={i} className="card" style={{padding:10, minHeight:80, cursor:'pointer', opacity: d.getMonth()===monthDate.getMonth()?1:.5}} onClick={()=>openDay(d)}>
+					<div key={i} className="dashboard-card" style={{padding:12, minHeight:60, background:d.getMonth()===monthDate.getMonth()?'#e0e7ff':undefined, cursor:'pointer'}} onClick={()=>openDay(d)}>
 						<div style={{fontSize:12, opacity:.7}}>{d.getDate()}</div>
 					</div>
 				))}
 			</div>
 
 			{selectedDate && (
-				<Modal title={`Tasks on ${selectedDate}`} onClose={()=>setSelectedDate(null)}>
-					<div className="grid">
+				<Modal title={`Tasks for ${selectedDate}`} onClose={()=>setSelectedDate(null)}>
+					<div className="dashboard-grid">
 						{tasks.map(t => (
-							<div key={t.id} className="card">
-								<div style={{display:'flex', justifyContent:'space-between'}}>
-									<div style={{fontWeight:700}}>{t.title}</div>
-									<span className={`badge ${t.priority.toLowerCase()}`}>{t.priority}</span>
-								</div>
+							<div key={t.id} className="dashboard-card">
+								<div style={{fontWeight:700}}>{t.title}</div>
 								<div style={{opacity:.9}}>{t.description}</div>
+								<span className={`badge ${t.priority.toLowerCase()}`}>{t.priority}</span>
 							</div>
 						))}
 					</div>

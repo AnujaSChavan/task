@@ -25,53 +25,69 @@ export default function Tasks() {
 
 	const filtered = useMemo(() => tasks, [tasks])
 
-	function TaskBox({ t }) {
-		return (
-			<div className="card" style={{minWidth:280, flex:1, cursor:'pointer'}} onClick={()=>setEditTask(t)}>
-				<div style={{display:'flex', justifyContent:'space-between'}}>
-					<div style={{fontWeight:700}}>{t.title}</div>
-					<span className={`badge ${t.priority.toLowerCase()}`}>{t.priority}</span>
-				</div>
-				<div style={{opacity:.9}}>Due: {t.dueDate || '-'}</div>
-				<div style={{display:'flex', justifyContent:'flex-end', marginTop:8}}>
-					<button className="btn" style={{background:'#ef4444'}} onClick={async(e)=>{e.stopPropagation(); await api.del(`/api/tasks/${t.id}`); load()}}>Delete</button>
-				</div>
-			</div>
-		)
+				function TaskBox({ t }) {
+					const [isCompleted, setIsCompleted] = useState(t.status === 'COMPLETED');
+					const handleComplete = async (e) => {
+						e.stopPropagation();
+						if (!isCompleted) {
+							await api.put(`/api/tasks/${t.id}`, { ...t, status: 'COMPLETED' });
+							setIsCompleted(true);
+							load();
+						}
+					};
+					return (
+						<div className="dashboard-card" style={{minWidth:280, flex:1, position:'relative', paddingTop:18}}>
+							<div style={{position:'absolute', top:10, right:12, display:'flex', gap:8}}>
+								<span title="Edit" style={{cursor:'pointer', fontSize:18, color:'#2563eb'}} onClick={()=>setEditTask(t)}>
+									<svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M4 13.5V16h2.5l7.06-7.06-2.5-2.5L4 13.5z" stroke="#2563eb" strokeWidth="1.5"/><path d="M14.06 6.44a1.5 1.5 0 1 0-2.12-2.12l-1.06 1.06 2.5 2.5 1.06-1.06z" stroke="#2563eb" strokeWidth="1.5"/></svg>
+								</span>
+								<span title="Delete" style={{cursor:'pointer', fontSize:18, color:'#ef4444'}} onClick={async(e)=>{e.stopPropagation(); await api.del(`/api/tasks/${t.id}`); load();}}>
+									<svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M6 7v7m4-7v7M3 7h14" stroke="#ef4444" strokeWidth="1.5"/><rect x="5" y="7" width="10" height="8" rx="2" stroke="#ef4444" strokeWidth="1.5"/><rect x="8" y="3" width="4" height="2" rx="1" stroke="#ef4444" strokeWidth="1.5"/></svg>
+								</span>
+							</div>
+							<div style={{display:'flex', alignItems:'center', gap:8, marginBottom:6}}>
+								<input type="checkbox" checked={isCompleted} onChange={handleComplete} style={{width:18, height:18, accentColor:'#22c55e'}} />
+								<div style={{fontWeight:700, fontSize:'1.15rem', flex:1}}>{t.title}</div>
+							</div>
+							<div style={{fontSize:13, opacity:.8, marginBottom:2}}><span className={`badge ${t.priority.toLowerCase()}`}>{t.priority}</span></div>
+							<div style={{fontSize:13, opacity:.8}}>Due: {t.dueDate || '-'}</div>
+							<div style={{fontSize:13, opacity:.8}}>Status: {t.status}</div>
+						</div>
+					)
 	}
 
-	return (
-		<div className="fade-in">
-			<div style={{display:'flex', justifyContent:'space-between', alignItems:'center'}}>
-				<h1 style={{marginTop:0}}>Tasks</h1>
-				<button className="btn" onClick={()=>setShowAdd(true)}>Add Task</button>
-			</div>
+		return (
+			<div className="fade-in">
+				<div style={{display:'flex', justifyContent:'space-between', alignItems:'center'}}>
+					<h1 style={{marginTop:0, fontWeight:800, fontSize:'2.2rem'}}>Tasks</h1>
+					<button className="btn" onClick={()=>setShowAdd(true)}>Add Task</button>
+				</div>
 
-			<div className="row" style={{marginBottom:12}}>
-				<select className="input" style={{maxWidth:220}} value={`${filter.type}:${filter.value}`} onChange={(e)=>{
-					const [type, value] = e.target.value.split(':')
-					setFilter({ type, value })
-				}}>
-					<option value="all:">All tasks</option>
-					<option value="priority:HIGH">High priority</option>
-					<option value="priority:MEDIUM">Medium priority</option>
-					<option value="priority:LOW">Low priority</option>
-					<option value="status:PENDING">Pending</option>
-					<option value="status:IN_PROGRESS">In Progress</option>
-					<option value="status:COMPLETED">Completed</option>
-					<option value="today:">Due today</option>
-					<option value="week:">Due this week</option>
-				</select>
-			</div>
+				<div style={{marginBottom:20}}>
+					<select className="input" style={{maxWidth:220}} value={`${filter.type}:${filter.value}`} onChange={(e)=>{
+						const [type, value] = e.target.value.split(':')
+						setFilter({ type, value })
+					}}>
+						<option value="all:">All tasks</option>
+						<option value="priority:HIGH">High priority</option>
+						<option value="priority:MEDIUM">Medium priority</option>
+						<option value="priority:LOW">Low priority</option>
+						<option value="status:PENDING">Pending</option>
+						<option value="status:IN_PROGRESS">In Progress</option>
+						<option value="status:COMPLETED">Completed</option>
+						<option value="today:">Due today</option>
+						<option value="week:">Due this week</option>
+					</select>
+				</div>
 
-			<div className="row" style={{flexWrap:'wrap'}}>
-				{filtered.map(t => <TaskBox key={t.id} t={t} />)}
-			</div>
+				<div className="dashboard-grid" style={{flexWrap:'wrap'}}>
+					{filtered.map(t => <TaskBox key={t.id} t={t} />)}
+				</div>
 
-			{showAdd && <TaskModal title="Add Task" onClose={()=>setShowAdd(false)} onSaved={()=>{ setShowAdd(false); load() }} initial={emptyTask} />}
-			{editTask && <TaskModal title="Edit Task" onClose={()=>setEditTask(null)} onSaved={()=>{ setEditTask(null); load() }} initial={editTask} />}
-		</div>
-	)
+				{showAdd && <TaskModal title="Add Task" onClose={()=>setShowAdd(false)} onSaved={()=>{ setShowAdd(false); load() }} initial={emptyTask} />}
+				{editTask && <TaskModal title="Edit Task" onClose={()=>setEditTask(null)} onSaved={()=>{ setEditTask(null); load() }} initial={editTask} />}
+			</div>
+		)
 }
 
 function TaskModal({ title, onClose, onSaved, initial }) {
