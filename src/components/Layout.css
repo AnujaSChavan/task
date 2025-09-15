@@ -77,8 +77,14 @@
 	font-size: 1.1rem;
 	color: var(--menu-color, #222);
 	cursor: pointer;
-	transition: background 0.2s;
+	transition: all 0.2s;
 	text-decoration: none;
+}
+
+.menu-icon {
+	font-size: 1.2rem;
+	width: 20px;
+	text-align: center;
 }
 .menu a.active {
 	background: #e0e7ff;
@@ -112,12 +118,26 @@
 	margin-bottom: 8px;
 }
 .logout {
-	margin-left: 8px;
+	margin: 0 32px 16px 32px;
 	color: #2563eb;
 	cursor: pointer;
 	font-size: 1rem;
 	background: none;
 	border: none;
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	padding: 8px 12px;
+	border-radius: 8px;
+	transition: all 0.2s;
+}
+
+.logout:hover {
+	background: #f1f5f9;
+}
+
+.logout-icon {
+	font-size: 1.1rem;
 }
 .theme-toggle {
 	margin: 24px 0 0 24px;
