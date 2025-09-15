@@ -1,14 +1,4 @@
-	@Query("SELECT DISTINCT t FROM Task t LEFT JOIN FETCH t.subtasks WHERE t.user.id = :userId")
-	List<Task> findAllWithSubtasksByUserId(@org.springframework.data.repository.query.Param("userId") Long userId);
-
-	@Query("SELECT t FROM Task t LEFT JOIN FETCH t.subtasks WHERE t.id = :taskId")
-	Task findWithSubtasksById(@org.springframework.data.repository.query.Param("taskId") Long taskId);
-	@Query("SELECT t FROM Task t LEFT JOIN FETCH t.subtasks WHERE t.user.id = :userId")
-	List<Task> findAllWithSubtasksByUserId(Long userId);
-
-	@Query("SELECT t FROM Task t LEFT JOIN FETCH t.subtasks WHERE t.id = :taskId")
-	Task findWithSubtasksById(Long taskId);
-package com.example.taskmanager.repository;
+	package com.example.taskmanager.repository;
 
 import com.example.taskmanager.model.*;
 import org.springframework.data.domain.Page;
